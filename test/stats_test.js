@@ -1,5 +1,6 @@
 suite('stats', function() {
-  var base          = require('../');
+  var base          = require('taskcluster-base');
+  var stats       = require('../lib/stats');
   var assert        = require('assert');
   var _             = require('lodash');
   var Promise       = require('promise');
@@ -20,24 +21,24 @@ suite('stats', function() {
   }
 
   test("Create Series", function() {
-    var TestSeries = new base.stats.Series({
+    var TestSeries = new stats.Series({
       name:               'TestSeries',
       columns: {
-        method:           base.stats.types.String,
-        duration:         base.stats.types.Number,
+        method:           stats.types.String,
+        duration:         stats.types.Number,
       },
-      additionalColumns:  base.stats.types.String,
+      additionalColumns:  stats.types.String,
     });
   });
 
   test("Create Influx", function() {
-    var influx = new base.stats.Influx({
+    var influx = new stats.Influx({
       connectionString:   cfg.get('influxdb:connectionString')
     });
   });
 
   test("Submit to influx", function() {
-    var influx = new base.stats.Influx({
+    var influx = new stats.Influx({
       connectionString:   cfg.get('influxdb:connectionString')
     });
     influx.addPoint('TestSeries', {
@@ -50,7 +51,7 @@ suite('stats', function() {
   });
 
   test("Submit to influx (by timeout)", function() {
-    var influx = new base.stats.Influx({
+    var influx = new stats.Influx({
       connectionString:   cfg.get('influxdb:connectionString'),
       maxDelay:           1
     });
@@ -66,7 +67,7 @@ suite('stats', function() {
   });
 
   test("Query influx", function() {
-    var influx = new base.stats.Influx({
+    var influx = new stats.Influx({
       connectionString:   cfg.get('influxdb:connectionString')
     });
     influx.addPoint('TestSeries', {
@@ -96,17 +97,17 @@ suite('stats', function() {
 
   test("Create reporter", function() {
     // Create test series
-    var TestSeries = new base.stats.Series({
+    var TestSeries = new stats.Series({
       name:               'TestSeries',
       columns: {
-        colA:             base.stats.types.String,
-        colB:             base.stats.types.Number,
+        colA:             stats.types.String,
+        colB:             stats.types.Number,
       },
-      additionalColumns:  base.stats.types.String,
+      additionalColumns:  stats.types.String,
     });
 
     // Create InfluxDB connection
-    var influx = new base.stats.Influx({
+    var influx = new stats.Influx({
       connectionString:   cfg.get('influxdb:connectionString')
     });
 
@@ -127,17 +128,17 @@ suite('stats', function() {
 
   test("Create reporter (with NullDrain)", function() {
     // Create test series
-    var TestSeries = new base.stats.Series({
+    var TestSeries = new stats.Series({
       name:               'TestSeries',
       columns: {
-        colA:             base.stats.types.String,
-        colB:             base.stats.types.Number,
+        colA:             stats.types.String,
+        colB:             stats.types.Number,
       },
-      additionalColumns:  base.stats.types.String,
+      additionalColumns:  stats.types.String,
     });
 
     // Create statistics drain with NullDrain
-    var drain = new base.stats.NullDrain();
+    var drain = new stats.NullDrain();
 
     // Create reporter
     var reporter = TestSeries.reporter(drain);
@@ -156,16 +157,16 @@ suite('stats', function() {
 
   test("Create reporter (with tags)", function() {
     // Create test series
-    var TestSeries = new base.stats.Series({
+    var TestSeries = new stats.Series({
       name:               'TestSeries',
       columns: {
-        colA:             base.stats.types.String,
-        colB:             base.stats.types.Number,
+        colA:             stats.types.String,
+        colB:             stats.types.Number,
       }
     });
 
     // Create statistics drain with NullDrain
-    var drain = new base.stats.NullDrain();
+    var drain = new stats.NullDrain();
 
     // Create reporter
     var reporter = TestSeries.reporter(drain, {
@@ -191,16 +192,16 @@ suite('stats', function() {
 
   test("Create reporter (with tags - overwrite tag)", function() {
     // Create test series
-    var TestSeries = new base.stats.Series({
+    var TestSeries = new stats.Series({
       name:               'TestSeries',
       columns: {
-        colA:             base.stats.types.String,
-        colB:             base.stats.types.Number,
+        colA:             stats.types.String,
+        colB:             stats.types.Number,
       }
     });
 
     // Create statistics drain with NullDrain
-    var drain = new base.stats.NullDrain();
+    var drain = new stats.NullDrain();
 
     // Create reporter
     var reporter = TestSeries.reporter(drain, {
@@ -227,17 +228,17 @@ suite('stats', function() {
 
   test("Report wrong columns", function() {
     // Create test series
-    var TestSeries = new base.stats.Series({
+    var TestSeries = new stats.Series({
       name:               'TestSeries',
       columns: {
-        colA:             base.stats.types.String,
-        colB:             base.stats.types.Number,
+        colA:             stats.types.String,
+        colB:             stats.types.Number,
       },
-      additionalColumns:  base.stats.types.String,
+      additionalColumns:  stats.types.String,
     });
 
     // Create InfluxDB connection
-    var influx = new base.stats.Influx({
+    var influx = new stats.Influx({
       connectionString:   cfg.get('influxdb:connectionString')
     });
 
@@ -262,17 +263,17 @@ suite('stats', function() {
 
   test("Report wrong columns (again)", function() {
     // Create test series
-    var TestSeries = new base.stats.Series({
+    var TestSeries = new stats.Series({
       name:               'TestSeries',
       columns: {
-        colA:             base.stats.types.String,
-        colB:             base.stats.types.Number,
+        colA:             stats.types.String,
+        colB:             stats.types.Number,
       },
-      additionalColumns:  base.stats.types.String,
+      additionalColumns:  stats.types.String,
     });
 
     // Create InfluxDB connection
-    var influx = new base.stats.Influx({
+    var influx = new stats.Influx({
       connectionString:   cfg.get('influxdb:connectionString')
     });
 
@@ -297,17 +298,17 @@ suite('stats', function() {
 
   test("Report additional columns", function() {
     // Create test series
-    var TestSeries = new base.stats.Series({
+    var TestSeries = new stats.Series({
       name:               'TestSeries',
       columns: {
-        colA:             base.stats.types.String,
-        colB:             base.stats.types.Number,
+        colA:             stats.types.String,
+        colB:             stats.types.Number,
       },
-      additionalColumns:  base.stats.types.String,
+      additionalColumns:  stats.types.String,
     });
 
     // Create InfluxDB connection
-    var influx = new base.stats.Influx({
+    var influx = new stats.Influx({
       connectionString:   cfg.get('influxdb:connectionString')
     });
 
@@ -329,17 +330,17 @@ suite('stats', function() {
 
   test("Report additional columns (wrong type)", function() {
     // Create test series
-    var TestSeries = new base.stats.Series({
+    var TestSeries = new stats.Series({
       name:               'TestSeries',
       columns: {
-        colA:             base.stats.types.String,
-        colB:             base.stats.types.Number,
+        colA:             stats.types.String,
+        colB:             stats.types.Number,
       },
-      additionalColumns:  base.stats.types.String,
+      additionalColumns:  stats.types.String,
     });
 
     // Create InfluxDB connection
-    var influx = new base.stats.Influx({
+    var influx = new stats.Influx({
       connectionString:   cfg.get('influxdb:connectionString')
     });
 
@@ -365,16 +366,16 @@ suite('stats', function() {
 
   test("Report additional columns (not allowed)", function() {
     // Create test series
-    var TestSeries = new base.stats.Series({
+    var TestSeries = new stats.Series({
       name:               'TestSeries',
       columns: {
-        colA:             base.stats.types.String,
-        colB:             base.stats.types.Number,
+        colA:             stats.types.String,
+        colB:             stats.types.Number,
       }
     });
 
     // Create InfluxDB connection
-    var influx = new base.stats.Influx({
+    var influx = new stats.Influx({
       connectionString:   cfg.get('influxdb:connectionString')
     });
 
@@ -400,12 +401,12 @@ suite('stats', function() {
 
   test("startProcessUsageReporting (and stop)", function() {
     // Create InfluxDB connection
-    var influx = new base.stats.Influx({
+    var influx = new stats.Influx({
       connectionString:   cfg.get('influxdb:connectionString')
     });
 
     // Start monitoring
-    base.stats.startProcessUsageReporting({
+    stats.startProcessUsageReporting({
       drain:      influx,
       interval:   0.1,
       component:  'taskcluster-base-test',
@@ -416,18 +417,18 @@ suite('stats', function() {
       setTimeout(accept, 400);
     }).then(function() {
       assert(influx.pendingPoints() >= 2, "We should have at least 2 points");
-      base.stats.stopProcessUsageReporting();
+      stats.stopProcessUsageReporting();
     });
   });
 
   test("startProcessUsageReporting (twice)", function() {
     // Create InfluxDB connection
-    var influx = new base.stats.Influx({
+    var influx = new stats.Influx({
       connectionString:   cfg.get('influxdb:connectionString')
     });
 
     // Start monitoring
-    base.stats.startProcessUsageReporting({
+    stats.startProcessUsageReporting({
       drain:      influx,
       interval:   0.1,
       component:  'taskcluster-base-test',
@@ -435,7 +436,7 @@ suite('stats', function() {
     });
 
     // Start monitoring
-    base.stats.startProcessUsageReporting({
+    stats.startProcessUsageReporting({
       drain:      influx,
       interval:   0.1,
       component:  'taskcluster-base-test',
@@ -446,7 +447,7 @@ suite('stats', function() {
       setTimeout(accept, 400);
     }).then(function() {
       assert(influx.pendingPoints() >= 2, "We should have at least 2 points");
-      base.stats.stopProcessUsageReporting();
+      stats.stopProcessUsageReporting();
     });
   });
 
@@ -503,12 +504,12 @@ suite('stats', function() {
     };
 
     // Create InfluxDB connection
-    var influx = new base.stats.Influx({
+    var influx = new stats.Influx({
       connectionString:   cfg.get('influxdb:connectionString')
     });
 
     // Wrap handler
-    var timedHandler = base.stats.createHandlerTimer(handler, {
+    var timedHandler = stats.createHandlerTimer(handler, {
       drain:        influx,
       component:    'taskcluster-base-test'
     });
@@ -536,12 +537,12 @@ suite('stats', function() {
     };
 
     // Create InfluxDB connection
-    var influx = new base.stats.Influx({
+    var influx = new stats.Influx({
       connectionString:   cfg.get('influxdb:connectionString')
     });
 
     // Wrap handler
-    var timedHandler = base.stats.createHandlerTimer(handler, {
+    var timedHandler = stats.createHandlerTimer(handler, {
       drain:        influx,
       component:    'taskcluster-base-test'
     });
@@ -561,10 +562,10 @@ suite('stats', function() {
 
   test("createAPIClientStatsHandler", function() {
     // Create statistics drain with NullDrain
-    var drain = new base.stats.NullDrain();
+    var drain = new stats.NullDrain();
 
     // Create handler to test
-    var handler = base.stats.createAPIClientStatsHandler({
+    var handler = stats.createAPIClientStatsHandler({
       drain: drain,
       tags: {
         component: 'base-tests',
@@ -593,10 +594,10 @@ suite('stats', function() {
 
   test("createAPIClientStatsHandler (illegal columns)", function() {
     // Create statistics drain with NullDrain
-    var drain = new base.stats.NullDrain();
+    var drain = new stats.NullDrain();
 
     try {
-      base.stats.createAPIClientStatsHandler({
+      stats.createAPIClientStatsHandler({
         drain: drain,
         tags: {
           component: 'base-tests',
