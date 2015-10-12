@@ -1,13 +1,13 @@
 suite('stats', function() {
-  var base          = require('taskcluster-base');
-  var stats       = require('../lib/stats');
+  var config        = require('taskcluster-lib-config');
+  var stats         = require('../lib/stats');
   var assert        = require('assert');
   var _             = require('lodash');
   var Promise       = require('promise');
   var debug         = require('debug')('test:stats_test');
 
   // Load necessary configuration
-  var cfg = base.config({
+  var cfg = config({
     envs: [
       'influxdb_connectionString',
     ],
@@ -409,7 +409,7 @@ suite('stats', function() {
     stats.startProcessUsageReporting({
       drain:      influx,
       interval:   0.1,
-      component:  'taskcluster-base-test',
+      component:  'taskcluster-stats-test',
       process:    'mocha'
     });
 
@@ -431,7 +431,7 @@ suite('stats', function() {
     stats.startProcessUsageReporting({
       drain:      influx,
       interval:   0.1,
-      component:  'taskcluster-base-test',
+      component:  'taskcluster-stats-test',
       process:    'mocha'
     });
 
@@ -439,7 +439,7 @@ suite('stats', function() {
     stats.startProcessUsageReporting({
       drain:      influx,
       interval:   0.1,
-      component:  'taskcluster-base-test',
+      component:  'taskcluster-stats-test',
       process:    'mocha'
     });
 
@@ -511,7 +511,7 @@ suite('stats', function() {
     // Wrap handler
     var timedHandler = stats.createHandlerTimer(handler, {
       drain:        influx,
-      component:    'taskcluster-base-test'
+      component:    'taskcluster-stats-test'
     });
 
     // Test that nothing has been reported yet
@@ -544,7 +544,7 @@ suite('stats', function() {
     // Wrap handler
     var timedHandler = stats.createHandlerTimer(handler, {
       drain:        influx,
-      component:    'taskcluster-base-test'
+      component:    'taskcluster-stats-test'
     });
 
     // Test that nothing has been reported yet
