@@ -1,6 +1,6 @@
 {
   "name": "taskcluster-lib-stats",
-  "version": "0.8.7",
+  "version": "0.8.8",
   "author": "Jonas Finnemann Jensen <jopsen@gmail.com>",
   "description": "taskcluster-lib-stats",
   "license": "MPL-2.0",
@@ -21,6 +21,7 @@
     "lodash": "2.4.1",
     "promise": "6.1.0",
     "superagent-promise": "0.1.2",
+    "superagent": "^0.16.0",
     "url-join": "0.0.1",
     "usage": "^0.7.0"
   },
