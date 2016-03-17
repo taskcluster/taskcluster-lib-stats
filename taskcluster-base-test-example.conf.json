@@ -1,0 +1,5 @@
+{
+  "influxdb": {
+    "connectionString": "https://<user>:<pwd>@<host>:<port>/db/<database>"
+  }
+}
